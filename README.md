@@ -11,7 +11,7 @@ Typescript:
 ```typescript
 import Bilibili from 'bilibili-api'
 const bilibili = new Bilibili()
-asycn function test() {
+async function test() {
     const result = await bilibili.login(username, password)
 }
 ```
@@ -20,7 +20,7 @@ CommonJS:
 ```javascript
 const Bilibili = require('bilibili-api')
 const bilibili = new Bilibili()
-asycn function test() {
+async function test() {
     const result = await bilibili.login(username, password)
 }
 ```
