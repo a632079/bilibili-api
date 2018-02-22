@@ -12,7 +12,7 @@
   "repository": "https://gitee.com/a632079/bilibili-api",
   "author": "'a632079' <'a632079@qq.com'>",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/mocha": "^2.2.48",
