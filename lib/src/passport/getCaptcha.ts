@@ -1,31 +1,31 @@
 'use strict'
-import qs from 'query-string'
-import got, { GotBodyOptions } from 'got'
-import Cookie from 'cookie'
+import rq from 'request-promise'
+import { QuerySign } from '../../utils'
 
 export interface Captcha {
   captcha: Buffer
   cookie: string
 }
-async function getCaptcha (cookie: string): Promise<Captcha | boolean > {
-  const config = {
-    headers: {
-      'Cookie': cookie
-    },
-    encoding: null
-  }
-  try {
-    const response = await got('https://passport.bilibili.com/captcha', config)
-    const JSESSIONID = 'JSESSIONID=' + Cookie.parse(response.headers['set-cookie'][0]).JSESSIONID + ';'
-    let retCookie = cookie + ' ' + JSESSIONID
-    return {
-      captcha: response['body'],
-      cookie: retCookie
+async function getCaptcha (cookie: string): Promise<Captcha> {
+  const url = 'https://passport.bilibili.com/captcha '
+  const jar = rq.jar()
+  jar.setCookie(cookie, url)
+  const response = await rq.get(url,
+    {
+      headers: {
+        'User-Agent': ''
+      },
+      resolveWithFullResponse: true,
+      jar: jar
     }
-  } catch (e) {
-    console.log(e)
-    return false
+  )
+  const Cookie = jar.getCookieString(url)
+  const captcha = Buffer.from(response.body, 'binary')
+  const result = {
+    cookie: Cookie,
+    captcha
   }
+  return result
 }
 
 export default getCaptcha

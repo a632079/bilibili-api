@@ -3,28 +3,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-const got_1 = __importDefault(require("got"));
-const cookie_1 = __importDefault(require("cookie"));
+const request_promise_1 = __importDefault(require("request-promise"));
 async function getCaptcha(cookie) {
-    const config = {
+    const url = 'https://passport.bilibili.com/captcha ';
+    const jar = request_promise_1.default.jar();
+    jar.setCookie(cookie, url);
+    const response = await request_promise_1.default.get(url, {
         headers: {
-            'Cookie': cookie
+            'User-Agent': ''
         },
-        encoding: null
+        resolveWithFullResponse: true,
+        jar: jar
+    });
+    const Cookie = jar.getCookieString(url);
+    const captcha = Buffer.from(response.body, 'binary');
+    const result = {
+        cookie: Cookie,
+        captcha
     };
-    try {
-        const response = await got_1.default('https://passport.bilibili.com/captcha', config);
-        const JSESSIONID = 'JSESSIONID=' + cookie_1.default.parse(response.headers['set-cookie'][0]).JSESSIONID + ';';
-        let retCookie = cookie + ' ' + JSESSIONID;
-        return {
-            captcha: response['body'],
-            cookie: retCookie
-        };
-    }
-    catch (e) {
-        console.log(e);
-        return false;
-    }
+    return result;
 }
 exports.default = getCaptcha;
 //# sourceMappingURL=getCaptcha.js.map

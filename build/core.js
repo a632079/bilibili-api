@@ -15,5 +15,5 @@ const Bluebird = __importStar(require("bluebird"));
 global.Promise = Bluebird.Promise;
 // Load Lib
 const bilibili_1 = __importDefault(require("./lib/bilibili"));
-exports = bilibili_1.default;
+exports.default = bilibili_1.default;
 //# sourceMappingURL=core.js.map

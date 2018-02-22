@@ -1,13 +1,13 @@
 {
   "name": "bilibili-api",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Node.js Promised Bilibili Android Client API",
   "main": "./build/core.js",
   "types": "./build/core.d.ts",
   "scripts": {
     "run": "node ./build/core.js",
-    "build": "tsc",
-    "dev": "supervisor -w build ./build/core.js"
+    "test": "mocha ./build/test/",
+    "build": "tsc"
   },
   "repository": "https://gitee.com/a632079/bilibili-api",
   "author": "'a632079' <'a632079@qq.com'>",
@@ -17,33 +17,24 @@
     "@types/chai": "^4.1.2",
     "@types/mocha": "^2.2.48",
     "chai": "^4.1.2",
-    "mocha": "^5.0.0",
-    "tslint": "^5.9.1",
-    "tslint-config-standard": "^7.0.0"
+    "mocha": "^5.0.0"
   },
   "dependencies": {
-    "@types/big-integer": "^0.0.31",
     "@types/bluebird": "^3.5.20",
-    "@types/cookie": "^0.3.1",
     "@types/form-data": "^2.2.1",
-    "@types/got": "^7.1.6",
     "@types/node": "^9.4.0",
-    "@types/node-rsa": "^0.4.1",
+    "@types/pify": "^3.0.0",
     "@types/query-string": "^5.0.1",
-    "@types/readline-sync": "^1.4.3",
-    "@types/tunnel": "^0.0.0",
-    "big-integer": "^1.6.26",
+    "@types/request": "^2.47.0",
+    "@types/request-promise": "^4.1.41",
+    "@types/tough-cookie": "^2.3.2",
     "bluebird": "^3.5.1",
-    "cookie": "^0.3.1",
-    "form-data": "^2.3.1",
-    "got": "^8.0.3",
-    "imaging": "^2.1.2",
-    "node-rsa": "^0.4.2",
+    "format": "^0.2.2",
+    "pify": "^3.0.0",
     "query-string": "^5.1.0",
-    "readline-sync": "^1.4.7",
-    "term-img": "^2.1.0",
-    "terminal-kit": "^1.14.3",
-    "tunnel": "^0.0.5",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "tough-cookie": "^2.3.3",
     "typescript": "^2.7.1"
   }
 }

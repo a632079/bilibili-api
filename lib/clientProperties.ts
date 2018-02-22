@@ -6,10 +6,12 @@ class ClientProperties {
   private version = '5.15.0.515000'
   private build = ''
   private buvId = 'JxdyESFAJkcjEicQbBBsCTlbal5uX2Yinfoc'
+
   constructor () {
     this.generateBuildProperty()
     return this
   }
+
   public setVersion (version: string): ClientProperties {
     if (version) {
       this.version = version

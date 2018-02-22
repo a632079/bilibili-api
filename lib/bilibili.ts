@@ -1,30 +1,27 @@
-interface Login {
-  username: string
-  password: string
-  captcha?: string
+import Login, { LoginResponse } from './src/passport/login'
+import getCaptcha, { Captcha } from './src/passport/getCaptcha'
+const login = new Login()
+interface Bilibili {
+  login (username: string, password: string): Promise<LoginResponse>
+  loginWithCaptcha (username: string, password: string, captcha: string, cookie: string): Promise<LoginResponse>
+  getCaptcha (cookie?: string): Promise<Captcha>
 }
 
-interface LoginResponse {
-  msg: string
-  status: number
-  ts: number
-}
-
-class Bilibili {
-  loginInfo: Login
-  constructor (login: Login){
-    this.loginInfo = login
+class Bilibili implements Bilibili {
+  constructor () {
     return this
   }
-  public async login (): Promise<LoginResponse> {
-    const info: Login = this.loginInfo
-    return {
-      msg: '',
-      status: 2,
-      ts: 2
-    }
+  async login (username: string, password: string) {
+    return login.login(username, password)
   }
 
-}
+  async loginWithCaptcha (username: string, password: string, captcha: string, cookie: string) {
+    return login.withCaptcha(username, password, captcha, cookie)
+  }
 
-export = Bilibili
+  async getCaptcha(cookie: string = '') {
+    return getCaptcha(cookie)
+  }
+} 
+
+export default Bilibili
