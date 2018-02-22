@@ -33,6 +33,6 @@ asycn function test() {
   * `cookie` 为 `request.jar.getCookieString()` 所返回的字符串
 
 ## 测试
-克隆项目到本地， 执行: `pnpm i` 或 `yarn`
-对 `test` 目录下的测试文件进行测试，然后执行: `pnpm run dev` 或 `yarn dev`
-进行 单元测试: `pnpm run test` 或 `yarn test`
+克隆项目到本地， 执行: `pnpm i` 或 `yarn`  
+对 `test` 目录下的测试文件进行测试，然后执行: `pnpm run dev` 或 `yarn dev`  
+进行 单元测试: `pnpm run test` 或 `yarn test`  
