@@ -1,6 +1,6 @@
 {
   "name": "bilibili-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Node.js Promised Bilibili Android Client API",
   "main": "./build/core.js",
   "types": "./build/core.d.ts",

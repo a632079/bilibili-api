@@ -87,7 +87,7 @@ class Login implements Logins {
     jar.setCookie(cookie, url)
     const response = await rq.post(url, {
       headers: {
-        'User-Agent': ''
+        'User-Agent': 'Mozilla/5.0 BiliDroid/5.15.0 (bbcallen@gmail.com)'
       },
       form: params,
       jar: jar,

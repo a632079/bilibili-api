@@ -13,7 +13,7 @@ async function getCaptcha (cookie: string): Promise<Captcha> {
   const response = await rq.get(url,
     {
       headers: {
-        'User-Agent': ''
+        'User-Agent': 'Mozilla/5.0 BiliDroid/5.15.0 (bbcallen@gmail.com)'
       },
       resolveWithFullResponse: true,
       jar: jar

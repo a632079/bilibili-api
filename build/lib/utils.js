@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_1 = __importDefault(require("crypto"));
 const query_string_1 = __importDefault(require("query-string"));
 const clientProperties_1 = __importDefault(require("./clientProperties"));
+const request_promise_1 = __importDefault(require("request-promise"));
 const clientProperties = new clientProperties_1.default();
 function getTraceId(now = new Date()) {
     const date = now;
@@ -21,6 +22,50 @@ function getTraceId(now = new Date()) {
     return result;
 }
 class QuerySign {
+    static generateRequest(method, url, params, body = false, option) {
+        /**
+        * 生产 HTTP 请求
+        * @param {string} method
+        * @param {string} url
+        * @param {object} param
+        * @param {boolen} body
+        * @param {object} options
+        * @returns {Promise<any>}
+        **/
+        const qs = this.generateQuery(params);
+        let options;
+        if (method === 'post') {
+            options = {
+                method,
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 BiliDroid/5.15.0 (bbcallen@gmail.com)'
+                },
+                form: qs,
+                json: body ? true : false,
+                resolveWithFullResponse: body ? false : true
+            };
+        }
+        else {
+            url += `?${qs}`;
+            options = {
+                method,
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 BiliDroid/5.15.0 (bbcallen@gmail.com)'
+                },
+                json: body ? true : false,
+                resolveWithFullResponse: body ? false : true
+            };
+        }
+        if (option && option.cookie) {
+            const jar = request_promise_1.default.jar();
+            jar.setCookie(option.cookie, url);
+            Object.assign(options, { jar });
+        }
+        if (option && option.headers) {
+            Object.assign(options.headers, option.headers);
+        }
+        return request_promise_1.default(url, options);
+    }
     static generateQuery(params = {}) {
         const now = new Date();
         const base = {

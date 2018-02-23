@@ -15,7 +15,7 @@ async function getKey (): Promise<Key | boolean> {
   const options: RequestPromiseOptions = {
     form: params,
     headers: {
-      'User-Agent': ''
+      'User-Agent': 'Mozilla/5.0 BiliDroid/5.15.0 (bbcallen@gmail.com)'
     },
     resolveWithFullResponse: true,
 
