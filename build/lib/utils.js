@@ -64,11 +64,13 @@ class QuerySign {
         if (option && option.headers) {
             Object.assign(options.headers, option.headers);
         }
+        console.log(url);
+        console.log(options);
         return request_promise_1.default(url, options);
     }
-    static generateQuery(params = {}) {
+    static generateQuery(params = {}, withOut) {
         const now = new Date();
-        const base = {
+        let base = {
             _device: 'android',
             _hwid: clientProperties.getHardwareId(),
             build: clientProperties.getBuild(),
@@ -81,11 +83,11 @@ class QuerySign {
             version: clientProperties.getVersion(),
             appkey: clientProperties.getAppKey()
         };
-        // MergeParams
-        Object.assign(params, base);
+        const target = {};
+        Object.assign(target, base, params);
         // Get Sign
-        const sign = this.calculateSign(params);
-        return `${query_string_1.default.stringify(params)}&sign=${sign}`;
+        const sign = this.calculateSign(target);
+        return `${query_string_1.default.stringify(target)}&sign=${sign}`;
     }
     // 排序 params 并计算 sign
     // 传入值为 name1=value1 形式

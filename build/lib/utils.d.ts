@@ -5,6 +5,6 @@ export declare class QuerySign {
         cookie?: string;
         headers?: object;
     }): rq.RequestPromise;
-    static generateQuery(params?: object): string;
+    static generateQuery(params?: object, withOut?: Array<string>): string;
     private static calculateSign(params);
 }

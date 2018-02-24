@@ -10,6 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../../utils");
 class Bangumi {
+    constructor(user = null) {
+        this.user = user;
+    }
     getInfo(seasonId, option) {
         return __awaiter(this, void 0, void 0, function* () {
             /**
@@ -25,7 +28,7 @@ class Bangumi {
             // console.log(body)
             const ret = {
                 status: body.code,
-                message: body.message
+                message: body.message || 'OK'
             };
             if (body.code === 0) {
                 ret.data = body.result;
@@ -47,7 +50,7 @@ class Bangumi {
             const body = yield utils_1.QuerySign.generateRequest('get', 'https://bangumi.bilibili.com/view/api/season', params, true);
             const ret = {
                 status: body.code,
-                message: body.message
+                message: body.message || 'OK'
             };
             if (body.code === 0) {
                 ret.data = body.result;
@@ -68,7 +71,7 @@ class Bangumi {
             const body = yield utils_1.QuerySign.generateRequest('get', 'https://bangumi.bilibili.com/view/api/media', params, true);
             const ret = {
                 status: body.code,
-                message: body.message
+                message: body.message || 'OK'
             };
             if (body.code === 0) {
                 ret.data = body.result;
@@ -89,10 +92,52 @@ class Bangumi {
             const body = yield utils_1.QuerySign.generateRequest('get', 'https://bangumi.bilibili.com/media/api/detail', params, true);
             const ret = {
                 status: body.code,
-                message: body.message
+                message: body.message || 'OK'
             };
             if (body.code === 0) {
                 ret.data = body.result;
+            }
+            return ret;
+        });
+    }
+    getURL(cid, option) {
+        return __awaiter(this, void 0, void 0, function* () {
+            /**
+             * 获取 Bangumi 的视频播放链接
+             * @param {number} cid // 由 getInfo 获得
+             * // 可选参数为 一个对象， 已知 qn: 16 - 360P , 80 - 假 1080P
+             * @return {Promise<any>}
+             */
+            let params = {
+                device: 'android',
+                appkey: 'iVGUTjsxvpLeuDCf',
+                cid: cid,
+                expire: this.user ? this.user.data.expires_in : 0,
+                mid: this.user ? this.user.data.mid : 0,
+                module: 'bangumi',
+                npcybs: '0',
+                otype: 'json',
+                qn: option && option.qn ? option.qn : '16',
+                season_type: option && option.season_type ? option.season_type : 1,
+                track_path: option && option.track_path ? option.track_path : 0,
+                type: 'any'
+            };
+            if (this.user) {
+                Object.assign(params, {
+                    access_key: this.user.data.access_token
+                });
+            }
+            const body = yield utils_1.QuerySign.generateRequest('get', 'https://bangumi.bilibili.com/player/api/v2/playurl', params, true, {
+                headers: {
+                    'User-Agent': 'Bilibili Freedoooooom/MarkII'
+                }
+            });
+            const ret = {
+                status: body.code,
+                message: body.message || 'OK'
+            };
+            if (body.code === 0) {
+                ret.data = body;
             }
             return ret;
         });

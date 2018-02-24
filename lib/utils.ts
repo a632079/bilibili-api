@@ -10,17 +10,17 @@ interface QuerySignMembers {
 }
 
 interface NecessnaryParams {
-  _device: string
-  _hwid: string
-  build: string
-  mobi_app: string
-  platform: string
-  scale: string
-  src: string
-  ts: string
-  trace_id: string
-  version: string
-  appkey: string
+  _device?: string
+  _hwid?: string
+  build?: string
+  mobi_app?: string
+  platform?: string
+  scale?: string
+  src?: string
+  ts?: string
+  trace_id?: string
+  version?: string
+  appkey?: string
 }
 
 function getTraceId(now: Date = new Date()): string {
@@ -81,12 +81,14 @@ export class QuerySign {
     if (option && option.headers) {
       Object.assign(options.headers, option.headers)
     }
+    console.log(url)
+    console.log(options)
     return rq(url, options)
   }
 
-  public static generateQuery(params: object = {}) {
+  public static generateQuery(params: object = {}, withOut?: Array<string>) {
     const now = new Date()
-    const base: NecessnaryParams = {
+    let base: NecessnaryParams = {
       _device: 'android',
       _hwid: clientProperties.getHardwareId(),
       build: clientProperties.getBuild(),
@@ -99,12 +101,12 @@ export class QuerySign {
       version: clientProperties.getVersion(),
       appkey: clientProperties.getAppKey()
     }
-    // MergeParams
-    Object.assign(params, base)
+    const target = {}
+    Object.assign(target, base, params)
 
     // Get Sign
-    const sign = this.calculateSign(params)
-    return `${qs.stringify(params)}&sign=${sign}`
+    const sign = this.calculateSign(target)
+    return `${qs.stringify(target)}&sign=${sign}`
   }
   // 排序 params 并计算 sign
   // 传入值为 name1=value1 形式

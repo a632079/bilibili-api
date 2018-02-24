@@ -1,20 +1,26 @@
 import { LoginResponse } from './src/passport/login';
 import { Captcha } from './src/passport/getCaptcha';
-import { Search, SearchResponse, searchType } from './src/search/base';
+import { SearchResponse, searchType } from './src/search/base';
 import { Bangumi } from './src/bangumi/base';
-interface Bilibili extends Search {
+export interface Bilibili {
+    constructor(store: Bilibili['user'] | null): Bilibili;
     user: {
-        data: object;
+        data: {
+            mid: number;
+            access_token: string;
+            refresh_token: string;
+            expires_in: number;
+        };
         cookie: string;
-    };
+    } | null;
     cookie: string;
-    load(store: object): void;
     login(username: string, password: string): Promise<LoginResponse>;
     loginWithCaptcha(username: string, password: string, captcha: string, cookie?: string): Promise<LoginResponse>;
     getCaptcha(cookie?: string): Promise<Captcha>;
 }
-declare class Bilibili implements Bilibili {
-    constructor();
+export declare class Bilibili implements Bilibili {
+    constructor(store?: Bilibili['user'] | null);
+    store(): object | null;
     Search: {
         new (): {
             keyword(keyword: string, page: number, limit: number): Promise<SearchResponse>;
@@ -29,4 +35,3 @@ declare class Bilibili implements Bilibili {
     };
     Bangumi: Bangumi;
 }
-export default Bilibili;

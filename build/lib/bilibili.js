@@ -17,15 +17,17 @@ const base_1 = require("./src/search/base");
 const base_2 = require("./src/bangumi/base");
 const login = new login_1.default();
 class Bilibili {
-    constructor() {
+    constructor(store = null) {
         // include Classes
         this.Search = class extends base_1.Search {
         };
         this.Bangumi = new base_2.Bangumi();
+        this.user = store;
+        this.Bangumi = new base_2.Bangumi(this.user);
         return this;
     }
-    load(store) {
-        this.user = store;
+    store() {
+        return this.user;
     }
     login(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -62,5 +64,5 @@ class Bilibili {
         });
     }
 }
-exports.default = Bilibili;
+exports.Bilibili = Bilibili;
 //# sourceMappingURL=bilibili.js.map

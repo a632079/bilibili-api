@@ -4,39 +4,44 @@ import { Search, SearchResponse, searchType } from './src/search/base'
 import { Bangumi } from './src/bangumi/base'
 
 const login = new Login()
-interface Bilibili extends Search {
+export interface Bilibili {
+  constructor(store: Bilibili['user'] | null): Bilibili
   user: {
-    data: object
+    data: {
+      mid: number,
+      access_token: string,
+      refresh_token: string,
+      expires_in: number
+    }
     cookie: string
-  }
+  } | null
   cookie: string
-  load (store: object): void
-  login (username: string, password: string): Promise<LoginResponse>
-  loginWithCaptcha (username: string, password: string, captcha: string, cookie?: string): Promise<LoginResponse>
-  getCaptcha (cookie?: string): Promise<Captcha>
+  login(username: string, password: string): Promise<LoginResponse>
+  loginWithCaptcha(username: string, password: string, captcha: string, cookie?: string): Promise<LoginResponse>
+  getCaptcha(cookie?: string): Promise<Captcha>
 }
 
-class Bilibili implements Bilibili {
-  constructor () {
+export class Bilibili implements Bilibili {
+  constructor(store: Bilibili['user'] | null = null) {
+    this.user = store
+    this.Bangumi = new Bangumi(this.user)
     return this
   }
-
-  load (store: Bilibili['user']) {
-    this.user = store
+  store(): object | null {
+    return this.user
   }
-
-  async login (username: string, password: string) {
+  async login(username: string, password: string) {
     const result = await login.login(username, password)
     if (result.status == 0 && result.data && result.cookie) {
       this.user = {
         cookie: result.cookie,
-        data:  result.data
+        data: result.data
       }
     }
     return result
   }
 
-  async loginWithCaptcha (username: string, password: string, captcha: string, cookie?: string) {
+  async loginWithCaptcha(username: string, password: string, captcha: string, cookie?: string) {
     if (!cookie) {
       cookie = (this.cookie) ? this.cookie : ''
     }
@@ -44,7 +49,7 @@ class Bilibili implements Bilibili {
     if (result.status == 0 && result.data && result.cookie) {
       this.user = {
         cookie: result.cookie,
-        data:  result.data
+        data: result.data
       }
     }
     return result
@@ -57,10 +62,9 @@ class Bilibili implements Bilibili {
   }
 
   // include Classes
-  Search = class extends Search {}
+  Search = class extends Search { }
 
   Bangumi = new Bangumi()
 
-} 
+}
 
-export default Bilibili

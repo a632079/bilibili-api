@@ -1,2 +1,2 @@
-import bilibili from './lib/bilibili';
-export default bilibili;
+import { Bilibili } from './lib/bilibili';
+export default Bilibili;
